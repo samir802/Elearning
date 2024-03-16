@@ -1,0 +1,109 @@
+﻿@using ELearning.Models;
+
+@{
+    ViewData["Title"] = "Course Details";
+    CourseModel sqldata = ViewBag.sqldata;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Course List</h1>
+</div>
+
+<!-- Search bar and button -->
+<div class="row mb-3" style="width:500px">
+    <div class="col">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+    </div>
+    <div class="col-auto">
+        <button id="searchBtn" class="btn btn-success">Search</button>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Course ID</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Instructor Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="courseTableBody">
+        @foreach (var course in sqldata.courseList)
+        {
+            <tr>
+                <td>@course.CourseId</td>
+                <td>@course.CourseName</td>
+                <td>@course.InstructorName</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Course", new { id = course.CourseId })" class="btn btn-primary">Edit</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@course.CourseId">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="del-@course.CourseId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <dl class="dl-horizontal">
+                                <dt>Course ID:</dt>
+                                <dd>@course.CourseId</dd>
+                                <dt>Course Name:</dt>
+                                <dd>@course.CourseName</dd>
+
+                            </dl>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="@Url.Action("DeleteConfirmed", "Course", new { id = course.CourseId })" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- No results found message -->
+        <tr id="noResultsRow" style="display: none;">
+            <td colspan="4" class="text-center" style="color:red;">No results found!</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="@Url.Action("CoursePage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>
+
+<script>
+    // Search functionality
+    document.getElementById("searchInput").addEventListener("input", function () {
+        var input, filter, table, tr, td, i, txtValue;
+        input = this.value.toUpperCase();
+        table = document.getElementById("courseTableBody");
+        tr = table.getElementsByTagName("tr");
+        var found = false; // Flag to check if any result is found
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1]; // Adjust index to the column you want to search in
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(input) > -1) {
+                    tr[i].style.display = "";
+                    found = true;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // Display "No results found" message if no matching data is found
+        var noResultsRow = document.getElementById("noResultsRow");
+        if (!found) {
+            noResultsRow.style.display = "";
+        } else {
+            noResultsRow.style.display = "none";
+        }
+    });
+</script>

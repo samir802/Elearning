@@ -1,0 +1,105 @@
+﻿@using ELearning.Models;
+
+@{
+    InstructorModel sqldata = ViewBag.sqldata;
+    ViewData["Title"] = "Instructor Details";
+}
+
+<div class="container">
+    <h1 class="display-4 text-center">Instructor List</h1>
+
+    <div class="row mb-3" style="width:500px">
+        <div class="col">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+        </div>
+        <div class="col-auto">
+            <button id="searchBtn" class="btn btn-success">Search</button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>Instructor ID</th>
+                <th>Instructor Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="instructorTableBody">
+            @foreach (var instructor in sqldata.InstructorList)
+            {
+                <tr>
+                    <td>@instructor.InstructorId</td>
+                    <td>@instructor.InstructorName</td>
+                    <td>
+                        <a href="#" class="btn btn-primary">Edit</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@instructor.InstructorId">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                <!-- Modal -->
+                <div class="modal fade" id="del-@instructor.InstructorId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <dl class="dl-horizontal">
+                                    <dt>Instructor ID:</dt>
+                                    <dd>@instructor.InstructorId</dd>
+                                    <dt>Instructor Name:</dt>
+                                    <dd>@instructor.InstructorName</dd>
+                                </dl>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="@Url.Action("DeleteConfirmed", "Instructor", new { id = instructor.InstructorId })" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- No results found message -->
+            <tr id="noResultsRow" style="display: none;">
+                <td colspan="3" class="text-center" style="color:red;">No results found!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a href="@Url.Action("InstructorPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left mr-1"></i> Back</a>
+
+<script>
+    // Search functionality
+    document.getElementById("searchInput").addEventListener("input", function () {
+        var input, filter, table, tr, td, i, txtValue;
+        input = this.value.toUpperCase();
+        table = document.getElementById("instructorTableBody");
+        tr = table.getElementsByTagName("tr");
+        var found = false; // Flag to check if any result is found
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1]; // Adjust index to the column you want to search in
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(input) > -1) {
+                    tr[i].style.display = "";
+                    found = true;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // Display "No results found" message if no matching data is found
+        var noResultsRow = document.getElementById("noResultsRow");
+        if (!found) {
+            noResultsRow.style.display = "";
+        } else {
+            noResultsRow.style.display = "none";
+        }
+    });
+</script>

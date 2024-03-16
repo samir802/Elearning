@@ -1,0 +1,62 @@
+﻿@using ELearning.Models;
+
+@{
+    ViewData["Title"] = "Enrollment Details";
+    EnrollmentModel sqldata = ViewBag.sqldata;
+}
+
+<div class="text-center">
+    <h1 class="display-4">enrollment List</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Enrollment ID</th>
+            <th scope="col">Student</th>
+            <th scope="col">Course </th>
+            <th scope="col">Enrollment Date</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrollment in sqldata.listEnrollment)
+        {
+            <tr>
+                <td>@enrollment.EnrollmentId</td>
+                <td>@enrollment.StudentName</td>
+                <td>@enrollment.CourseName</td>
+                <td>@enrollment.EnrollmentDate</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Enrollment", new { id = enrollment.EnrollmentId })" class="btn btn-primary">Edit</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@enrollment.EnrollmentId">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="del-@enrollment.EnrollmentId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <dl class="dl-horizontal">
+                                <dt>enrollment ID:</dt>
+                                <dd>@enrollment.EnrollmentId</dd>
+                               
+                            </dl>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="@Url.Action("DeleteConfirmed", "enrollment", new { id = enrollment.EnrollmentId })" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>
+    <a href="@Url.Action("EnrollmentPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>

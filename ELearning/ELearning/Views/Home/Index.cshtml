@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+   
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <a href="@Url.Action("StudentPage", "Home")" class="card-link" style="text-decoration:none">
+                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" >
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div class="mr-3" style="margin-right: 8px;">
+                            <i class="fas fa-user fa-2x"></i>
+                        </div>
+                        <div style="margin-left: 8px;">
+                            <!-- Added margin-left -->
+                            <h3 class="card-text mb-0">Student</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("CoursePage", "Home")" class="card-link" style="text-decoration:none">
+                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" >
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div class="mr-3" style="margin-right: 8px;">
+                            <i class="fas fa-book fa-2x"></i>
+                        </div>
+                        <div style="margin-left: 8px;">
+                            <!-- Added margin-left -->
+                            <h3 class="card-text mb-0">Course</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("InstructorPage", "Home")" class="card-link" style="text-decoration:none">
+                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div class="mr-3" style="margin-right: 8px;">
+                            <i class="fas fa-chalkboard-user fa-2x"></i>
+                        </div>
+                        <div style="margin-left: 8px;">
+                            <!-- Added margin-left -->
+                            <h3 class="card-text mb-0">Instructor</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("LessonPage", "Home")" class="card-link" style="text-decoration:none">
+                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div class="mr-3" style="margin-right: 8px;">
+                            <i class="fas fa-file fa-2x"></i>
+                        </div>
+                        <div style="margin-left: 8px;">
+                            <!-- Added margin-left -->
+                            <h3 class="card-text mb-0">Lesson</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("EnrollmentPage", "Home")" class="card-link" style="text-decoration:none">
+                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div class="mr-3" style="margin-right: 8px;">
+                            <i class="fas fa-file fa-2x"></i>
+                        </div>
+                        <div style="margin-left: 8px;">
+                            <!-- Added margin-left -->
+                            <h3 class="card-text mb-0">Enrollment</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+
+</div>

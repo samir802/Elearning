@@ -1,0 +1,124 @@
+﻿@using ELearning.Models;
+@{
+    ViewData["text"] = ViewBag.Message;
+}
+@{
+    ViewData["Title"] = "Course Page";
+}
+<!-- Bootstrap modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="border: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="errorModalLabel">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<main class="mt-1 pt-3">
+    <div class="container">
+        <!-- Post Element -->
+        <div class="card mb-3 wow fadeIn">
+            <div class="card-header font-weight-bold">
+                Student Form
+            </div>
+            <div class="card-body">
+                <!-- Default form post -->
+                <form id="studentForm" asp-action="AddCourse" asp-controller="Course" method="post" onsubmit="return validateForm();">
+                    <label for="replyFormCourseName">
+                        Course Name
+                    </label>
+                    <input type="text" name="CourseName" class="form-control">
+                    <br>
+                    <label for="replyFormInstructorId">
+                        Instructor
+                    </label>
+                    <select name="InstructorId" class="form-control">
+                        @foreach (var instructor in ViewBag.SqlData.InstructorList)
+                        {
+                            <option value="@instructor.InstructorId">@instructor.InstructorName</option>
+                        }
+                    </select>
+                    
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+                <!-- End of post form -->
+                <!-- Show submission status -->
+                <p id="alert" style="display: none; color: red;"></p>
+            </div>
+        </div>
+        <!-- End of entire Post element -->
+        <!--Card-->
+        <div class="card-body text-center">
+
+            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
+               role="button">
+                Back to Home
+                <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        <!-- End of Card -->
+    </div>
+    <!-- End of Container -->
+</main>
+
+
+
+<script>
+    function validateForm() {
+        var form = document.getElementById("studentForm");
+        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+        var isValid = true;
+
+        inputs.forEach(function (input) {
+            if (input.value.trim() === "") {
+                isValid = false;
+                input.style.border = "1px solid red";
+            } else {
+                input.style.border = "";
+            }
+        });
+
+        if (!isValid) {
+            // Show error modal
+            var errorMessage = document.getElementById("errorMessage");
+            errorMessage.innerText = "Please fill in all fields.";
+            $('#errorModal').modal('show');
+        }
+
+        return isValid;
+    }
+
+    // Close the modal manually using vanilla JavaScript
+    function closeModal() {
+        var modal = document.getElementById("errorModal");
+        var backdrop = document.querySelector(".modal-backdrop");
+        modal.classList.remove("show");
+        modal.style.display = "none";
+        backdrop.remove();
+        document.body.classList.remove("modal-open");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+
+        inputs.forEach(function (input) {
+            input.addEventListener("input", function () {
+                if (this.value.trim() !== "") {
+                    this.style.border = "";
+                }
+            });
+        });
+    });
+</script>

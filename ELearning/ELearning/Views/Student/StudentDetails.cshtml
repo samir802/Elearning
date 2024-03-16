@@ -1,0 +1,27 @@
+﻿@model ELearning.Models.StudentModel
+
+@{
+    CountryModel countryModel = ViewBag.SqlData;
+}
+
+<h1>Student Details</h1>
+
+<form method="post" asp-action="Update" asp-controller="Student">
+    <div>
+        <p><strong>Student ID:</strong> <input type="text" name="StudentId" value="@Model.StudentId" readonly></p>
+        <p><strong>Name:</strong> <input type="text" name="StudentName" value="@Model.StudentName"></p>
+        <p><strong>Contact:</strong> <input type="text" name="Contact" value="@Model.Contact"></p>
+        <p><strong>DOB:</strong> <input type="date" name="DOB" value="@Model.DOB.ToString("yyyy-MM-dd")"></p>
+        <p><strong>Email:</strong> <input type="text" name="Email" value="@Model.Email"></p>
+        <p>
+            <strong>Country:</strong>
+            <select id="countryDropdown" name="Zip">
+                @foreach (var data in countryModel.country)
+                {
+                    <option value="@data.Zip" selected="@(data.Country == Model.Country )">@data.Country</option>
+                }
+            </select>
+        </p>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
