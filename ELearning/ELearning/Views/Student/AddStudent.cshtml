@@ -1,5 +1,9 @@
 ﻿
 @using ELearning.Models;
+
+@{
+    Layout = "../Shared/_DashboardLayout";
+}
 @{
     ViewData["text"] = ViewBag.Message;
 }
@@ -28,9 +32,7 @@
     <div class="container">
         <!-- Post Element -->
         <div class="card mb-3 wow fadeIn">
-            <div class="card-header font-weight-bold">
-                Student Form
-            </div>
+            
             <div class="card-body">
                 <!-- Default form post -->
                 <form id="studentForm" asp-action="AddStudent" asp-controller="Student" method="post" onsubmit="return validateForm();">

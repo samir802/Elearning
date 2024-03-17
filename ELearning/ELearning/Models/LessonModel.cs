@@ -77,5 +77,43 @@ namespace ELearning.Models
                 // Log the exception or handle it appropriately
             }
         }
+
+
+        public LessonModel GetLessonDetails(int id)
+        {
+            LessonModel lesson = new LessonModel();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(conString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT l.LessonId, l.LessonTitle, c.CourseId,c.CourseName FROM Lesson l JOIN Course c ON l.CourseId = c.CourseId WHERE l.LessonId = :LessonId";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("LessonId", id));
+
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                lesson.LessonId = Convert.ToInt32(reader["LessonId"]);
+                                lesson.LessonTitle = Convert.ToString(reader["LessonTitle"]);
+                                lesson.CourseId = Convert.ToInt32(reader["CourseId"]);
+                                lesson.CourseName = Convert.ToString(reader["LessonTitle"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Console.WriteLine("Error fetching student details: " + ex.Message);
+            }
+
+            return lesson;
+        }
     }
 }

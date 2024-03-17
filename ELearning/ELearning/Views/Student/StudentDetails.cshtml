@@ -4,24 +4,38 @@
     CountryModel countryModel = ViewBag.SqlData;
 }
 
-<h1>Student Details</h1>
-
-<form method="post" asp-action="Update" asp-controller="Student">
-    <div>
-        <p><strong>Student ID:</strong> <input type="text" name="StudentId" value="@Model.StudentId" readonly></p>
-        <p><strong>Name:</strong> <input type="text" name="StudentName" value="@Model.StudentName"></p>
-        <p><strong>Contact:</strong> <input type="text" name="Contact" value="@Model.Contact"></p>
-        <p><strong>DOB:</strong> <input type="date" name="DOB" value="@Model.DOB.ToString("yyyy-MM-dd")"></p>
-        <p><strong>Email:</strong> <input type="text" name="Email" value="@Model.Email"></p>
-        <p>
-            <strong>Country:</strong>
-            <select id="countryDropdown" name="Zip">
+<div class="container">
+    <h1 class="mt-5 mb-4">Student Details</h1>
+    <form method="post" asp-action="Update" asp-controller="Student">
+        <div class="mb-3">
+            <label for="studentId" class="form-label">Student ID:</label>
+            <input type="text" class="form-control" id="studentId" name="StudentId" value="@Model.StudentId" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="studentName" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="studentName" name="StudentName" value="@Model.StudentName">
+        </div>
+        <div class="mb-3">
+            <label for="contact" class="form-label">Contact:</label>
+            <input type="text" class="form-control" id="contact" name="Contact" value="@Model.Contact">
+        </div>
+        <div class="mb-3">
+            <label for="dob" class="form-label">DOB:</label>
+            <input type="date" class="form-control" id="dob" name="DOB" value="@Model.DOB.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="Email" value="@Model.Email">
+        </div>
+        <div class="mb-3">
+            <label for="countryDropdown" class="form-label">Country:</label>
+            <select class="form-select" id="countryDropdown" name="Zip">
                 @foreach (var data in countryModel.country)
                 {
-                    <option value="@data.Zip" selected="@(data.Country == Model.Country )">@data.Country</option>
+                    <option value="@data.Zip" selected="@(data.Country == Model.Country)">@data.Country</option>
                 }
             </select>
-        </p>
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
-    </div>
-</form>
+    </form>
+</div>

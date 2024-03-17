@@ -82,6 +82,44 @@ namespace ELearning.Models
             }
         }
 
+        public CourseModel GetCourseDetails(int id)
+        {
+            CourseModel course = new CourseModel();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(conString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT c.CourseId, c.CourseName, i.InstructorId, i.InstructorName FROM course c LEFT JOIN instructor i ON c.InstructorId = i.InstructorId WHERE c.CourseId = :CourseId";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("CourseId", id));
+
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                course.CourseId = Convert.ToInt32(reader["CourseId"]);
+                                course.CourseName = Convert.ToString(reader["CourseName"]);
+                                course.InstructorId = Convert.ToInt32(reader["InstructorId"]);
+                                course.InstructorName = Convert.ToString(reader["InstructorName"]);
+                               
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Console.WriteLine("Error fetching student details: " + ex.Message);
+            }
+
+            return course;
+        }
+
 
 
     }

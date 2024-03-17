@@ -1,0 +1,18 @@
+﻿@model ELearning.Models.InstructorModel
+
+
+<div class="container">
+    <h1 class="mt-5 mb-4">Student Details</h1>
+    <form method="post" asp-action="Update" asp-controller="Instructor">
+        <div class="mb-3">
+            <label for="instructorId" class="form-label">Instructor ID:</label>
+            <input type="text" class="form-control" id="InstructorId" name="InstructorId" value="@Model.InstructorId" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="instructorName" class="form-label">Instructor Name:</label>
+            <input type="text" class="form-control" id="InstructorName" name="InstructorName" value="@Model.InstructorName">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>

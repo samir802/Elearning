@@ -32,9 +32,6 @@ namespace ELearning.Models
             }
         }
 
-
-        
-
         public void GetInstructors()
         {
             try
@@ -68,6 +65,42 @@ namespace ELearning.Models
                 Console.WriteLine(ex.Message);
 
             }
+        }
+
+        public InstructorModel GetInstructorDetails(int id)
+        {
+            InstructorModel instructor = new InstructorModel();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(conString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT InstructorId, InstructorName FROM Instructor WHERE InstructorId = :InstructorId";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("InstructorId", id));
+
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                instructor.InstructorId = Convert.ToInt32(reader["InstructorId"]);
+                                instructor.InstructorName = Convert.ToString(reader["InstructorName"]);
+                               
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Console.WriteLine("Error fetching instructor details: " + ex.Message);
+            }
+
+            return instructor;
         }
     }
 }

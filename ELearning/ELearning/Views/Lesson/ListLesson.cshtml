@@ -27,7 +27,7 @@
                 <td>@lesson.LessonTitle</td>
                 
                 <td>
-                    <a href="@Url.Action("Edit", "lesson", new { id = lesson.LessonId })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("GetLessonById", "Lesson", new { id = lesson.LessonId })" class="btn btn-primary">Edit</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@lesson.LessonId">
                         Delete
                     </button>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <a href="@Url.Action("DeleteConfirmed", "lesson", new { id = lesson.LessonId })" class="btn btn-danger">Delete</a>
+                            <a href="@Url.Action("DeleteConfirmed", "Lesson", new { id = lesson.LessonId })" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>

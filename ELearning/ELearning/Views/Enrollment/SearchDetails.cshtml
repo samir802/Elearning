@@ -3,37 +3,37 @@
 @{
     StudentModel studentModel = ViewBag.Students;
     CourseModel course = ViewBag.Course;
-
 }
 
-<h1>Student Details</h1>
-
-<form method="post" asp-action="Update" asp-controller="Enrollment">
-    <div>
-        <p><strong>Enrollment ID:</strong> <input type="text" name="EnrollmentId" value="@Model.EnrollmentId" readonly></p>
-        <p>
-            <strong>Student:</strong>
-            <select id="studentDropdown" name="StudentId">
+<div class="container">
+    <h1 class="mt-5 mb-4">Enrollment Details</h1>
+    <form method="post" asp-action="Update" asp-controller="Enrollment">
+        <div class="mb-3">
+            <label for="enrollmentId" class="form-label">Enrollment ID:</label>
+            <input type="text" class="form-control" id="enrollmentId" name="EnrollmentId" value="@Model.EnrollmentId" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="studentDropdown" class="form-label">Student:</label>
+            <select class="form-select" id="studentDropdown" name="StudentId">
                 @foreach (var data in studentModel.StudentList)
                 {
-                    <option value="@data.StudentId" selected="@(data.StudentName == Model.StudentName )">@data.StudentName</option>
+                    <option value="@data.StudentId" selected="@(data.StudentId == Model.StudentId)">@data.StudentName</option>
                 }
             </select>
-        </p>
-
-        <p>
-            <strong>Course:</strong>
-            <select id="courseDropdown" name="CourseId">
+        </div>
+        <div class="mb-3">
+            <label for="courseDropdown" class="form-label">Course:</label>
+            <select class="form-select" id="courseDropdown" name="CourseId">
                 @foreach (var data in course.courseList)
                 {
-                    <option value="@data.CourseId" selected="@(data.CourseName == Model.CourseName )">@data.CourseName</option>
+                    <option value="@data.CourseId" selected="@(data.CourseId == Model.CourseId)">@data.CourseName</option>
                 }
             </select>
-        </p>
-        
-        <p><strong>Enrollment Date:</strong> <input type="date" name="EnrollmentDate" value="@Model.EnrollmentDate.ToString("yyyy-MM-dd")"></p>
-
-       
+        </div>
+        <div class="mb-3">
+            <label for="enrollmentDate" class="form-label">Enrollment Date:</label>
+            <input type="date" class="form-control" id="enrollmentDate" name="EnrollmentDate" value="@Model.EnrollmentDate.ToString("yyyy-MM-dd")">
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
-    </div>
-</form>
+    </form>
+</div>

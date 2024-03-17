@@ -53,6 +53,35 @@ namespace ELearning.Controllers
                 return Redirect("ListInstructor");
             }
         }
+
+        public IActionResult GetInstructorById(int id)
+        {
+            InstructorModel instructor = new InstructorModel();
+            instructor = instructor.GetInstructorDetails(id);
+
+            //CountryModel countryModel = new CountryModel();
+            //countryModel.GetCountry();
+            //ViewBag.SqlData = countryModel;
+
+            return View("InstructorDetails", instructor);
+        }
+
+        [HttpPost]
+        public ActionResult Update(InstructorModel updatedInstructor)
+        {
+            using (OracleConnection conn = new OracleConnection(conString))
+            {
+                conn.Open();
+                string query = "UPDATE Instructor SET InstructorName=:InstructorName WHERE InstructorId = :InstructorId";
+                OracleCommand cmd = new OracleCommand(query, conn);
+                cmd.Parameters.Add(":InstructorName", OracleDbType.Varchar2).Value = updatedInstructor.InstructorName;
+                cmd.Parameters.Add(":InstructorId", OracleDbType.Int32).Value = updatedInstructor.InstructorId;
+
+                cmd.ExecuteNonQuery();
+            }
+            // Redirect back to the page or any other appropriate action
+            return RedirectToAction("ListInstructor", "Instructor");
+        }
         public ActionResult DeleteConfirmed(int id)
         {
             try

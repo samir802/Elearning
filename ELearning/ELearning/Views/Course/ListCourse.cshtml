@@ -36,7 +36,7 @@
                 <td>@course.CourseName</td>
                 <td>@course.InstructorName</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Course", new { id = course.CourseId })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("GetCourseById", "Course", new { id = course.CourseId })" class="btn btn-primary">Edit</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@course.CourseId">
                         Delete
                     </button>

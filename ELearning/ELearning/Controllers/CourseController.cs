@@ -58,25 +58,76 @@ namespace ELearning.Controllers
                 return Redirect("ListCourse");
             }
         }
-       
-        // POST: Course/Delete/5
 
+
+        public IActionResult GetCourseById(int id)
+        {
+            CourseModel course = new CourseModel();
+            course = course.GetCourseDetails(id);
+
+            InstructorModel instructorModel = new InstructorModel();
+            instructorModel.GetInstructors();
+            ViewBag.SqlData = instructorModel;
+
+            return View("CourseDetails", course);
+        }
+
+        [HttpPost]
+        public ActionResult Update(CourseModel updatedCourse)
+        {
+            using (OracleConnection conn = new OracleConnection(conString))
+            {
+                conn.Open();
+                string query = "UPDATE Course SET CourseName=:CourseName, InstructorId=:InstructorId WHERE CourseId = :CourseId";
+                OracleCommand cmd = new OracleCommand(query, conn);
+                cmd.Parameters.Add(":CourseName", OracleDbType.Varchar2).Value = updatedCourse.CourseName;
+                cmd.Parameters.Add(":InstructorId", OracleDbType.Int32).Value = updatedCourse.InstructorId;
+                cmd.Parameters.Add(":CourseId", OracleDbType.Int32).Value = updatedCourse.CourseId;
+
+                Console.WriteLine(updatedCourse.CourseId);
+                Console.WriteLine(updatedCourse.InstructorId);
+
+                cmd.ExecuteNonQuery();
+            }
+            // Redirect back to the page or any other appropriate action
+            return RedirectToAction("ListCourse", "Course"); // Redirect to Home/Index
+        }
         public ActionResult DeleteConfirmed(int id)
         {
-            using (OracleConnection connection = new OracleConnection(conString))
+            try
             {
-                connection.Open();
-
-                string query = "DELETE FROM Course WHERE CourseId = :courseId";
-                using (OracleCommand command = new OracleCommand(query, connection))
+                using (OracleConnection connection = new OracleConnection(conString))
                 {
-                    command.Parameters.Add(new OracleParameter("courseId", id));
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "DELETE FROM Course WHERE CourseId = :courseId";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("courseId", id));
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return RedirectToAction("ListCourse");
+            }
+            catch (OracleException ex)
+            {
+                if (ex.Message.Contains("ORA-02292")) // Check if the error message contains ORA-02292
+                {
+                    // Handle the constraint violation by returning a view with JavaScript for pop-up dialog
+                    string errorMessage = "This item cannot be deleted because it has associated child records.";
+                    ViewBag.ErrorMessage = errorMessage;
+                    return View("ErrorPopup");
+                }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                    return RedirectToAction("ListCourse");
                 }
             }
-
-            return RedirectToAction("ListCourse"); // Assuming "Index" is the action method that displays the course list
         }
+
+
 
 
 
