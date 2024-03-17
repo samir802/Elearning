@@ -42,7 +42,7 @@ namespace ELearning.Controllers
         public IActionResult AddCourse(CourseModel model)
         {
             /* Make sure that inputted value isn't null or empty */
-            if (String.IsNullOrEmpty(model.CourseName) || model.InstructorId == null)
+            if (String.IsNullOrEmpty(model.CourseName) || model.InstructorId == 0)
             {
                 ViewBag.Message = "Error: Don't submit an empty value.";
                 return View();

@@ -1,0 +1,39 @@
+﻿@model ELearning.Models.EnrollmentModel
+
+@{
+    StudentModel studentModel = ViewBag.Students;
+    CourseModel course = ViewBag.Course;
+
+}
+
+<h1>Student Details</h1>
+
+<form method="post" asp-action="Update" asp-controller="Enrollment">
+    <div>
+        <p><strong>Enrollment ID:</strong> <input type="text" name="EnrollmentId" value="@Model.EnrollmentId" readonly></p>
+        <p>
+            <strong>Student:</strong>
+            <select id="studentDropdown" name="StudentId">
+                @foreach (var data in studentModel.StudentList)
+                {
+                    <option value="@data.StudentId" selected="@(data.StudentName == Model.StudentName )">@data.StudentName</option>
+                }
+            </select>
+        </p>
+
+        <p>
+            <strong>Course:</strong>
+            <select id="courseDropdown" name="CourseId">
+                @foreach (var data in course.courseList)
+                {
+                    <option value="@data.CourseId" selected="@(data.CourseName == Model.CourseName )">@data.CourseName</option>
+                }
+            </select>
+        </p>
+        
+        <p><strong>Enrollment Date:</strong> <input type="date" name="EnrollmentDate" value="@Model.EnrollmentDate.ToString("yyyy-MM-dd")"></p>
+
+       
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>

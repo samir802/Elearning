@@ -8,7 +8,17 @@
 <div class="text-center">
     <h1 class="display-4">enrollment List</h1>
 </div>
-
+<!-- Search bar -->
+<form method="get" action="@Url.Action("ListEnrollment", "Enrollment")">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" name="searchName" class="form-control" placeholder="Search by Student Name">
+        </div>
+        <div class="col-auto">
+            <button id="searchBtn" class="btn btn-success">Search</button>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -26,12 +36,13 @@
                 <td>@enrollment.EnrollmentId</td>
                 <td>@enrollment.StudentName</td>
                 <td>@enrollment.CourseName</td>
-                <td>@enrollment.EnrollmentDate</td>
+                <td>@enrollment.EnrollmentDate.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Enrollment", new { id = enrollment.EnrollmentId })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("GetEnrollmentById", "Enrollment", new { id = enrollment.EnrollmentId })" class="btn btn-primary">Edit</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@enrollment.EnrollmentId">
                         Delete
                     </button>
+                    @* <a href="@Url.Action("GetEnrollmentById", "Enrollment", new { id = enrollment.EnrollmentId })" class="btn btn-secondary">Details</a> *@
                 </td>
             </tr>
             <!-- Modal -->

@@ -40,6 +40,37 @@ namespace ELearning.Controllers
 			return View();
 		}
 
+        [HttpGet]
+        public IActionResult ListEnrollment(string searchName)
+        {
+            EnrollmentModel sqldata = new EnrollmentModel();
+
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                // Filter the enrollment list based on the entered student name
+                sqldata.GetEnrollmentsByStudentName(searchName);
+            }
+
+            else
+            {
+                sqldata.GetEnrollment();
+            }
+
+
+            ViewBag.sqldata = sqldata;
+            return View();
+        }
+
+        public IActionResult SearchDetails()
+		{
+
+			EnrollmentModel EnrollmentModel = new EnrollmentModel();
+			EnrollmentModel.GetEnrollment();
+			ViewBag.SqlData = EnrollmentModel;
+
+			return View();
+		}
+
 
 
 
@@ -64,7 +95,42 @@ namespace ELearning.Controllers
 			}
 		}
 
-		public ActionResult DeleteConfirmed(int id)
+		public IActionResult GetEnrollmentById(int id)
+		{
+			EnrollmentModel enroll = new EnrollmentModel();
+			enroll = enroll.GetEnrollmentDetails(id);
+
+			StudentModel student = new StudentModel();
+			student.GetStudents();
+			ViewBag.Students = student;
+
+			CourseModel course = new CourseModel();
+			course.Getcourses();
+			ViewBag.Course = course;
+
+			return View("SearchDetails", enroll);
+		}
+
+        [HttpPost]
+        public ActionResult Update(EnrollmentModel updatedEnrollment)
+        {
+            using (OracleConnection conn = new OracleConnection(conString))
+            {
+                conn.Open();
+                string query = "UPDATE Enrollment SET StudentId=:StudentId, CourseId=:CourseId,EnrollmentDate=:EnrollmentDate WHERE EnrollmentId = :EnrollmentId";
+                OracleCommand cmd = new OracleCommand(query, conn);
+                cmd.Parameters.Add(":StudentId", OracleDbType.Int32).Value = updatedEnrollment.StudentId;
+                cmd.Parameters.Add(":CourseIdId", OracleDbType.Int32).Value = updatedEnrollment.CourseId;
+                cmd.Parameters.Add(":CourseIdId", OracleDbType.Date).Value = updatedEnrollment.EnrollmentDate;               
+                cmd.Parameters.Add(":EnrollmentId", OracleDbType.Int32).Value = updatedEnrollment.EnrollmentId;
+
+                cmd.ExecuteNonQuery();
+            }
+            // Redirect back to the page or any other appropriate action
+            return RedirectToAction("ListEnrollment", "Enrollment"); 
+        }
+
+        public ActionResult DeleteConfirmed(int id)
 		{
 			using (OracleConnection connection = new OracleConnection(conString))
 			{
@@ -81,9 +147,30 @@ namespace ELearning.Controllers
 			return RedirectToAction("ListEnrollment"); 
 		}
 
+		//[HttpGet]
+  //      public IActionResult SearchDetails(string searchName)
+  //      {
+  //          EnrollmentModel sqldata = new EnrollmentModel();
+
+  //          if (!string.IsNullOrEmpty(searchName))
+  //          {
+  //              // Filter the enrollment list based on the entered student name
+  //              sqldata.GetEnrollmentsByStudentName(searchName);
+  //          }
+           
+  //          else
+  //          {
+  //              sqldata.GetEnrollment();
+  //          }
+			
+
+  //          ViewBag.sqldata = sqldata;
+  //          return View();
+  //      }
 
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

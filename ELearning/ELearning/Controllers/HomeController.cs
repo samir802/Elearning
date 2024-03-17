@@ -42,9 +42,14 @@ namespace ELearning.Controllers
             return View();
         }
          public IActionResult EnrollmentPage()
+         {
+            return View();
+         }
+        public IActionResult ProgressPage()
         {
             return View();
         }
+       
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
