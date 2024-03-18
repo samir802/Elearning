@@ -1,63 +1,50 @@
 ﻿@using ELearning.Models;
-
 @{
     ViewData["Title"] = "Lesson Details";
-    LessonModel sqldata = ViewBag.sqldata;
+    ProgressModel sqldata = ViewBag.sqldata;
 }
-
-<div class="text-center">
-    <h1 class="display-4">lesson List</h1>
+<div class="justify-content-center">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Progress List</h1>
+    </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-			<th scope="col">Lesson ID</th>
-			<th scope="col">Course</th>
-            <th scope="col">Lesson Title</th>            
-            <th scope="col">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var lesson in sqldata.lessons)
+<div class="container mt-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        @foreach (var progress in sqldata.ProgressList)
         {
-            <tr>
-				<td>@lesson.LessonId</td>
-				<td>@lesson.CourseName</td>
-                <td>@lesson.LessonTitle</td>
-                
-                <td>
-                    <a href="@Url.Action("Edit", "lesson", new { id = lesson.LessonId })" class="btn btn-primary">Edit</a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@lesson.LessonId">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            <!-- Modal -->
-            <div class="modal fade" id="del-@lesson.LessonId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete?</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <dl class="dl-horizontal">
-                                <dt>lesson ID:</dt>
-                                <dd>@lesson.LessonId</dd>
-                                <dt>lesson Name:</dt>
-                                <dd>@lesson.LessonTitle</dd>
-                                
-                            </dl>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <a href="@Url.Action("DeleteConfirmed", "lesson", new { id = lesson.LessonId })" class="btn btn-danger">Delete</a>
-                        </div>
+            <div class="col mb-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Student Name: @progress.StudentName</h5>
+                        <p class="card-text">Course: @progress.CourseName</p>
+                        <p class="card-text">Lesson: @progress.LessonTitle</p>
+                        <p class="card-text">Status: @progress.LessonStatus</p>
+                        @if (progress.LessonStatus == "Completed")
+                        {
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        }
+                        else if (progress.LessonStatus == "In Progress")
+                        {
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         }
-    </tbody>
-</table>
-<a href="@Url.Action("lessonPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("ProgressPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>
+    </div>
+</div>

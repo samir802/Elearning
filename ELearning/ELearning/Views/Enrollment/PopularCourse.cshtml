@@ -1,0 +1,73 @@
+﻿@using System.Globalization
+@model List<ELearning.Models.EnrollmentModel>
+@{
+    ViewData["Title"] = "Popular Courses by month";
+    int selectedMonth = ViewBag.SelectedMonth;
+}
+<div class="container">
+    <h1 class="text-center mt-5 mb-4">Popular Courses By Month</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="PopularCourse" method="get" class="mb-5">
+                <div class="form-group row">
+                    <label for="month" class="col-md-3 col-form-label">Select Month:</label>
+                    <div class="col-md-5">
+                        <select name="month" id="month" class="form-control">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
+                                if (i == selectedMonth)
+                                {
+                                    <option value="@i" selected>@monthName</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@monthName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Show Top Courses</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Count > 0)
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Course </th>
+                            <th>Enrollment Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model)
+                        {
+                            <tr>
+                                <td>@(Model.IndexOf(course) + 1)</td>
+                                <td>@course.CourseName</td>
+                                <td>@course.EnrollmentCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <p class="text-center">No data available</p>
+            </div>
+        </div>
+    }
+</div>

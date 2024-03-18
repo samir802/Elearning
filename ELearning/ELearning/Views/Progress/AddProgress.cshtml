@@ -1,8 +1,5 @@
 ﻿@using ELearning.Models;
 @{
-    ViewData["text"] = ViewBag.Message;
-}
-@{
     ViewData["Title"] = "Progress Page";
 }
 <!-- Bootstrap modal -->
@@ -31,119 +28,68 @@
                 Progress Form
             </div>
             <div class="card-body">
-                <!-- Default form post -->
-                <form id="progressForm" asp-action="AddProgress" asp-controller="Progress" method="post" onsubmit="return validateForm();">
-                    
+                <form method="get" action="@Url.Action("CompleteAddProgress", "Progress")" onsubmit="return validateForm()">
                     <label for="replyFormStudentId">
                         Student
                     </label>
-                    <select name="StudentId" class="form-control">
-                        @foreach (var student in ViewBag.Student.listEnrollment)
-                        {
-                            <option value="@student.StudentId">@student.StudentName</option>
+                    <select name="StudentId" id="studentId" class="form-control">
+                        <option value="">Select Student</option>
+                        @{
+                            var enrollments = ViewBag.Student.listEnrollment as List<EnrollmentModel>;
+                            if (enrollments != null)
+                            {
+                                var uniqueStudents = enrollments
+                                .GroupBy(e => e.StudentId)
+                                .Select(g => g.First())
+                                .ToList();
+                                foreach (var student in uniqueStudents)
+                                {
+                                    <option value="@student.StudentId">@student.StudentName</option>
+                                }
+                            }
                         }
                     </select>
-                    <label for="replyFormLessonId">
-                        Lesson
-                    </label>
-                    <select name="LessonId" class="form-control">
-                        @foreach (var lesson in ViewBag.Lesson.lessons)
-                        {
-                            <option value="@lesson.LessonId">@lesson.LessonTitle</option>
-                        }
-                    </select>
-                    <label for="replyFormCourseId">
-                        Course
-                    </label>
-                    <select name="CourseId" class="form-control">
-                        @foreach (var course in ViewBag.Student.listEnrollment)
-                        {
-                            <option value="@course.CourseId">@course.CourseName</option>
-                        }
-                    </select>
-
-                    <label for="replyFormLessonStatus">
-                        Lesson Status
-                    </label>
-                    <input type="text" name="LessonStatus" class="form-control">
-                    <br>
-
-                    <label for="replyFormLastAccessedDate">
-                        LastAccessedDate
-                    </label>
-                    <input type="date" name="LastAccessedDate" class="form-control">
-                    
-                    <!-- Submit Button -->
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                    <div class="col-auto mt-4">
+                        <button id="searchBtn" type="submit" class="btn btn-success">Go</button>
                     </div>
                 </form>
-                <!-- End of post form -->
-                <!-- Show submission status -->
-                <p id="alert" style="display: none; color: red;"></p>
             </div>
         </div>
         <!-- End of entire Post element -->
-        <!--Card-->
-        <div class="card-body text-center">
+        <a href="@Url.Action("ProgressPage", "Home")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
 
-            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
-               role="button">
-                Back to Home
-                <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <!-- End of Card -->
     </div>
     <!-- End of Container -->
 </main>
 
-
-
 <script>
+    // Function to handle form validation
     function validateForm() {
-        var form = document.getElementById("studentForm");
-        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
-        var isValid = true;
-
-        inputs.forEach(function (input) {
-            if (input.value.trim() === "") {
-                isValid = false;
-                input.style.border = "1px solid red";
-            } else {
-                input.style.border = "";
-            }
-        });
-
-        if (!isValid) {
-            // Show error modal
-            var errorMessage = document.getElementById("errorMessage");
-            errorMessage.innerText = "Please fill in all fields.";
-            $('#errorModal').modal('show');
+        var studentId = document.getElementById("studentId");
+        var studentValue = studentId.value.trim();
+        if (studentValue === "") {
+            $("#errorModal").modal("show");
+            document.getElementById("errorMessage").innerText = "Please select a student.";
+            studentId.classList.add("border-danger"); // Add border color class
+            return false; // Prevent form submission
+        } else {
+            return true; // Allow form submission
         }
-
-        return isValid;
     }
 
-    // Close the modal manually using vanilla JavaScript
+    // Function to handle modal close
     function closeModal() {
-        var modal = document.getElementById("errorModal");
-        var backdrop = document.querySelector(".modal-backdrop");
-        modal.classList.remove("show");
-        modal.style.display = "none";
-        backdrop.remove();
-        document.body.classList.remove("modal-open");
+        $("#errorModal").modal("hide");
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
-
-        inputs.forEach(function (input) {
-            input.addEventListener("input", function () {
-                if (this.value.trim() !== "") {
-                    this.style.border = "";
-                }
-            });
-        });
+    // Event listener to handle field change
+    document.getElementById("studentId").addEventListener("change", function () {
+        var studentId = document.getElementById("studentId");
+        var studentValue = studentId.value.trim();
+        if (studentValue !== "") {
+            studentId.classList.remove("border-danger"); // Remove border color class
+        }
     });
 </script>
+
+

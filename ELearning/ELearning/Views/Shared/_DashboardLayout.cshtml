@@ -1,10 +1,10 @@
-﻿@{
-    Layout = "./_Layout";
-}
-<head>
+﻿<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elearning</title>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .sidebar {
             height: 100%;
@@ -15,7 +15,8 @@
             background-color: #217B7E; /* Sidebar background color */
         }
 
-            .sidebar a {
+
+            .sidebar a,li {
                 padding: 10px;
                 text-decoration: none;
                 font-size: 18px;
@@ -52,7 +53,7 @@
             }
 
                 .dropdown-container a:hover {
-                    background-color: #333;
+                    background-color: #217B7E;
                 }
 
         .show {
@@ -62,132 +63,145 @@
         /* Hide bullet points for ul */
         .sidebar-menu {
             list-style-type: none;
-
+            padding: 0; /* Remove padding */
         }
-       
+
+
     </style>
-
-
 </head>
 <body>
     <div class="d-flex">
-        <div class="container-fluid w-25">
+        <div class="container-fluid w-10">
             <div class="row">
-                <div class="col-md-3 col-sm-4 col-xs-12 p-0 sidebar">
-                    <div class="sidebar-header">
+                <div class="col-md-3 col-sm- col-xs-12 p-0 w-40 sidebar">
+                    <div class="sidebar-header p-3" style="background-color:black;">
                         <h3 style="color:white">ELearning</h3>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="@Url.Action("Index", "Home")">
-                                <i class="fas fa-home mr-2"></i> Home
+                        <li class="nav-item" >
+                            <a href="@Url.Action("Index", "Home")">
+                                <i class="fas fa-home"></i> Home
                             </a>
                         </li>
-                        
-                        <button class="dropdown-btn">
-                            <i class="fas fa-user-graduate"></i>
-                            Student
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-container">
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("AddStudent", "Student")">
-                                    <i class="fas fa-plus"></i> Add Student
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("ListStudent", "Student")">
-                                    <i class="fas fa-list"></i> List Student
-                                </a>
-                            </li>                           
-                        </div>
+                        <li class="nav-item">
+                            <a>
+                                <i class="fas fa-user"></i> Student
+                            </a>
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddStudent", "Student")">
+                                        <i class="fas fa-plus"></i> Add Student
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListStudent", "Student")">
+                                        <i class="fas fa-list"></i> List Student
+                                    </a>
+                                </li>
 
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a>
+                                <i class="fas fa-book"></i> Course
+                            </a>
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddCourse", "Course")">
+                                        <i class="fas fa-plus"></i> Add Course
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListCourse", "Course")">
+                                        <i class="fas fa-list"></i> List Course
+                                    </a>
+                                </li>
 
-                        <button class="dropdown-btn">
-                            <i class="fas fa-book"></i>
-                            Course
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-container">
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("AddCourse", "Course")">
-                                    <i class="fas fa-plus"></i> Add Course
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("ListCourse", "Course")">
-                                    <i class="fas fa-list"></i> List Course
-                                </a>
-                            </li>                           
-                        </div>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a>
+                                <i class="fas fa-person-chalkboard"></i> Instructor
+                            </a>
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddInstructor", "Instructor")">
+                                        <i class="fas fa-plus"></i> Add Instructor
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListInstructor", "Instructor")">
+                                        <i class="fas fa-list"></i> List Instructor
+                                    </a>
+                                </li>
 
-                        @* <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ListCourse", "Course")">
-                                <i class="fas fa-book mr-2"></i> Course
-                            </a>
-                        </li>
+                            </ul>
+                        <li/>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ListInstructor", "Instructor")">
-                                <i class="fas fa-chalkboard-teacher mr-2"></i> Instructor
+                            <a>
+                                <i class="fas fa-file"></i> Lesson
                             </a>
-                        </li>
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddLesson", "Lesson")">
+                                        <i class="fas fa-plus"></i> Add Lesson
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListLesson", "Lesson")">
+                                        <i class="fas fa-list"></i> List Lesson
+                                    </a>
+                                </li>
+
+                            </ul>
+                        <li/>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ListLesson", "Lesson")">
-                                <i class="fas fa-file-alt mr-2"></i> Lesson
+                            <a>
+                                <i class="fas fa-file-import"></i> Enrollment
                             </a>
-                        </li>
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddEnrollment", "Enrollment")">
+                                        <i class="fas fa-plus"></i> Add Enrollment
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListEnrollment", "Enrollment")">
+                                        <i class="fas fa-list"></i> List Enrollment
+                                    </a>
+                                </li>
+
+                            </ul>
+                        <li/>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ListEnrollment", "Enrollment")">
-                                <i class="fas fa-users mr-2"></i> Enrollment
+                            <a>
+                                <i class="fas fa-progress"></i>Progress
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Privacy", "Home")">
-                                <i class="fas fa-shield-alt mr-2"></i> Privacy
-                            </a>
-                        </li> *@
+                            <ul style="padding: 0;">
+                                <li>
+                                    <a href="@Url.Action("AddProgress", "Progress")">
+                                        <i class="fas fa-plus"></i> Add Progress
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ListProgress", "Progress")">
+                                        <i class="fas fa-list"></i> List Progress
+                                    </a>
+                                </li>
+
+                            </ul>
+                        <li/>
+
                     </ul>
                 </div>
             </div>
         </div>
 
-
-  @*   <div class="sidebar">
-        <a href="#">Home</a>
-        <button class="dropdown-btn">
-            Products
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-            <a href="#">Product 1</a>
-            <a href="#">Product 2</a>
-            <a href="#">Product 3</a>
+        <div class="w-100 h-100">
+            <!-- Content Goes Here -->
         </div>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-    </div> *@
+    </div>
     <div class="w-100 h-100">
         @RenderBody()
     </div>
-
-    <script>
-        document.querySelectorAll('.dropdown-btn').forEach(item => {
-            item.addEventListener('click', event => {
-                let dropdownContent = item.nextElementSibling;
-                dropdownContent.classList.toggle('show');
-            });
-        });
-
-        window.onclick = function (event) {
-            if (!event.target.matches('.dropdown-btn')) {
-                let dropdowns = document.getElementsByClassName("dropdown-container");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    let openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-    </script>
-    </body>
+</body>

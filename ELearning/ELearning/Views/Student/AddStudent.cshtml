@@ -2,9 +2,6 @@
 @using ELearning.Models;
 
 @{
-    Layout = "../Shared/_DashboardLayout";
-}
-@{
     ViewData["text"] = ViewBag.Message;
 }
 @{
@@ -80,16 +77,8 @@
         <!-- End of entire Post element -->
 
 
-        <!--Card-->
-        <div class="card-body text-center">
+        <a href="@Url.Action("StudentPage", "Home")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
 
-            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
-               role="button">
-                Back to Home
-                <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <!-- End of Card -->
     </div>
     <!-- End of Container -->
 </main>
@@ -99,7 +88,7 @@
 <script>
     function validateForm() {
         var form = document.getElementById("studentForm");
-        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+        var inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], select');
         var isValid = true;
 
         inputs.forEach(function (input) {
@@ -132,7 +121,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+        var inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], select');
 
         inputs.forEach(function (input) {
             input.addEventListener("input", function () {
@@ -143,3 +132,4 @@
         });
     });
 </script>
+

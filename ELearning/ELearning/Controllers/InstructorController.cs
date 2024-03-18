@@ -117,9 +117,23 @@ namespace ELearning.Controllers
             }
         }
 
+        public IActionResult SearchByInstructor(string searchName)
+        {
+            InstructorModel sqldata = new InstructorModel();
 
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                // Filter the enrollment list based on the entered student name
+                sqldata.GetInstructorBySearchName(searchName);
+            }
+            else
+            {
+                sqldata.GetInstructors();
+            }
 
-
+            ViewBag.sqldata = sqldata;
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

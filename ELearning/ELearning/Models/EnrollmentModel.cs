@@ -30,6 +30,7 @@ namespace ELearning.Models
 
 
         public string InstructorName { get; set; }
+        public int EnrollmentCount { get; set; }
 
         public List<EnrollmentModel> listEnrollment =	new List<EnrollmentModel>();
 
@@ -166,13 +167,14 @@ namespace ELearning.Models
             {
                 using (OracleConnection con = new OracleConnection(conString))
                 {
-					string queryString = "SELECT e.EnrollmentId,e.StudentId,s.StudentName,s.contact,s.DOB,s.email,co.country_name,c.CourseId,c.CourseName,i.InstructorName,e.EnrollmentDate" +
-						" FROM enrollment e " +
-						"JOIN student s ON e.StudentId = s.StudentId " +
-						"JOIN course c ON e.CourseId = c.CourseId " +
-						"LEFT JOIN instructor i ON c.InstructorId = i.InstructorId " +
-						"JOIN country co ON s.zip = co.zip " +
-						"WHERE s.StudentName LIKE '%' || :studentName || '%'";
+                    string queryString = "SELECT e.EnrollmentId,e.StudentId,s.StudentName,s.contact,s.DOB,s.email,co.country_name,c.CourseId,c.CourseName,i.InstructorName,e.EnrollmentDate" +
+                    " FROM enrollment e " +
+                    "JOIN student s ON e.StudentId = s.StudentId " +
+                    "JOIN course c ON e.CourseId = c.CourseId " +
+                    "LEFT JOIN instructor i ON c.InstructorId = i.InstructorId " +
+                    "JOIN country co ON s.zip = co.zip " +
+                    "WHERE UPPER(s.StudentName) LIKE '%' || UPPER(:studentName) || '%'";
+
 
                     OracleCommand cmd = new OracleCommand(queryString, con);
                     cmd.Parameters.Add(":studentName", OracleDbType.Varchar2).Value = studentName;
@@ -207,6 +209,50 @@ namespace ELearning.Models
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public List<EnrollmentModel> PopularCourse(int month)
+        {
+            List<EnrollmentModel> topThreeCourses = new List<EnrollmentModel>();
+
+            try
+            {
+                using (OracleConnection con = new OracleConnection(conString))
+                {
+                    string queryString = "SELECT se.COURSEID, c.COURSENAME, COUNT(*) AS EnrollmentCount FROM ENROLLMENT se " +
+                        "JOIN COURSE c ON se.COURSEID = c.COURSEID " +
+                        "WHERE EXTRACT(MONTH FROM se.EnrollmentDate) = :month GROUP BY se.COURSEID, c.COURSENAME " +
+                        "ORDER BY EnrollmentCount DESC " +
+                        "FETCH FIRST 3 ROWS ONLY";
+
+
+                    using (OracleCommand cmd = new OracleCommand(queryString, con))
+                    {
+                        cmd.Parameters.Add(":month", OracleDbType.Int32).Value = month;
+                        con.Open();
+                        OracleDataReader reader = cmd.ExecuteReader();
+                        int count = 0;
+                        while (reader.Read() && count < 3)
+                        {
+                            EnrollmentModel courseEnrollment = new EnrollmentModel();
+                            courseEnrollment.CourseId = reader.GetInt32(0);
+                            courseEnrollment.CourseName = reader.GetString(1);
+                            courseEnrollment.EnrollmentCount = reader.GetInt32(2);
+                            topThreeCourses.Add(courseEnrollment);
+                            count++;
+                        }
+                        reader.Dispose();
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // Handle the exception as needed (logging, rethrow, etc.)
+            }
+
+            return topThreeCourses;
         }
     }
 }

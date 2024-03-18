@@ -19,10 +19,6 @@ namespace ELearning.Controllers
             _logger = logger;
         }
 
-        //public IActionResult AddProgress()
-        //{
-        //    return View();
-        //}
         public IActionResult AddProgress()
         {
             EnrollmentModel student = new EnrollmentModel();
@@ -41,15 +37,28 @@ namespace ELearning.Controllers
 
         public IActionResult ListProgress()
         {
-            StudentModel sqldata = new StudentModel();
-            sqldata.GetStudents();
+            ProgressModel sqldata = new ProgressModel();
+            sqldata.GetProgress();
             ViewBag.sqldata = sqldata;
 
 
             return View();
         }
 
+        [HttpGet]
+        public IActionResult CompleteAddProgress(int StudentId)
+        {
+            ProgressModel sqldata = new ProgressModel();
 
+            if (StudentId != 0)
+            {
+                // Filter the enrollment list based on the entered student name
+                sqldata.GetEnrollmentDetailsByEnrollStudentIdToAddProgress(StudentId);
+            }
+
+            ViewBag.sqldata = sqldata;
+            return View();
+        }
 
 
         [HttpPost]
@@ -69,7 +78,7 @@ namespace ELearning.Controllers
 
                 
                 ViewBag.Message = "Success: Value will be inserted into database";
-                return Redirect("Index");
+                return Redirect("ListProgress");
             }
         }
 

@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <main class="mt-1 pt-3">
@@ -37,7 +36,8 @@
                     <label for="replyFormStudentId">
                         Student
                     </label>
-                    <select name="StudentId" class="form-control">
+                    <select id="studentSelect" name="StudentId" class="form-control">
+                        <option value="" style="text-color:grey">Select Student</option>
                         @foreach (var student in ViewBag.SqlData.StudentList)
                         {
                             <option value="@student.StudentId">@student.StudentName</option>
@@ -46,7 +46,8 @@
                     <label for="replyFormCourseId">
                         Course
                     </label>
-                    <select name="CourseId" class="form-control">
+                    <select id="courseSelect" name="CourseId" class="form-control">
+                        <option value="" style="text-color:grey">Select Course</option>
                         @foreach (var course in ViewBag.course.courseList)
                         {
                             <option value="@course.CourseId">@course.CourseName</option>
@@ -65,48 +66,38 @@
             </div>
         </div>
         <!-- End of entire Post element -->
-        <!--Card-->
-        <div class="card-body text-center">
+        <a href="@Url.Action("EnrollmentPage", "Home")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
 
-            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
-               role="button">
-                Back to Home
-                <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <!-- End of Card -->
     </div>
     <!-- End of Container -->
 </main>
 
-
-
 <script>
     function validateForm() {
-        var form = document.getElementById("studentForm");
-        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+        var studentSelect = document.getElementById("studentSelect");
+        var courseSelect = document.getElementById("courseSelect");
         var isValid = true;
 
-        inputs.forEach(function (input) {
-            if (input.value.trim() === "") {
-                isValid = false;
-                input.style.border = "1px solid red";
-            } else {
-                input.style.border = "";
-            }
-        });
-
-        if (!isValid) {
-            // Show error modal
+        if (studentSelect.value === "") {
             var errorMessage = document.getElementById("errorMessage");
-            errorMessage.innerText = "Please fill in all fields.";
+            errorMessage.innerText = "Please select all fields";
             $('#errorModal').modal('show');
+            isValid = false;
+            studentSelect.style.border = "1px solid red";
+        } else {
+            studentSelect.style.border = "";
+        }
+
+        if (courseSelect.value === "") {
+            courseSelect.style.border = "1px solid red";
+            isValid = false;
+        } else {
+            courseSelect.style.border = "";
         }
 
         return isValid;
     }
 
-    // Close the modal manually using vanilla JavaScript
     function closeModal() {
         var modal = document.getElementById("errorModal");
         var backdrop = document.querySelector(".modal-backdrop");
@@ -116,15 +107,12 @@
         document.body.classList.remove("modal-open");
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+    // Remove red border when selection is made
+    document.getElementById("studentSelect").addEventListener("change", function () {
+        this.style.border = "";
+    });
 
-        inputs.forEach(function (input) {
-            input.addEventListener("input", function () {
-                if (this.value.trim() !== "") {
-                    this.style.border = "";
-                }
-            });
-        });
+    document.getElementById("courseSelect").addEventListener("change", function () {
+        this.style.border = "";
     });
 </script>

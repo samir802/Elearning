@@ -1,0 +1,65 @@
+﻿@using ELearning.Models;
+
+@{
+    InstructorModel Viewsqldata = ViewBag.sqldata;
+}
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>The table below shows content in the 'Course and Instructor' table.</p>
+</div>
+
+<!-- Search bar -->
+<div class="container mt-3">
+    <form method="get" action="@Url.Action("SearchByInstructor", "Instructor")">
+        <div class="form-group">
+            <input type="text" name="searchName" class="form-control" placeholder="Search by Instructor Name">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Main layout -->
+<main class="mt-1 pt-3">
+    <div class="container">
+
+        @if (Viewsqldata != null && Viewsqldata.SearchByInstructor.Count > 0)
+        {
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">CourseID</th>
+                        <th scope="col">CourseTitle</th>
+                        <th scope="col">Instructor ID</th>
+                        <th scope="col">Instructor Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < @Viewsqldata.SearchByInstructor.Count; i++)
+                    {
+                        <tr>
+                            <td>@Viewsqldata.SearchByInstructor[i].CourseId</td>
+                            <td>@Viewsqldata.SearchByInstructor[i].CourseTitle</td>
+                            <td>@Viewsqldata.SearchByInstructor[i].InstructorId</td>
+                            <td>@Viewsqldata.SearchByInstructor[i].InstructorName</td>
+                           
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <p>No data available</p>
+        }
+
+    </div>
+    <!-- End of class container-->
+</main>
+<!--End of Main layout-->

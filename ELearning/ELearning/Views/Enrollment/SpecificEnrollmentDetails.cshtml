@@ -1,0 +1,74 @@
+﻿@model ELearning.Models.EnrollmentModel
+@{
+    ViewData["Title"] = "Enrollment Details";
+}
+<style>
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .details-label {
+        font-weight: bold;
+        width: 200px;
+        flex-shrink: 0;
+    }
+
+    .details-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    p {
+        margin: 0;
+        color: #666;
+    }
+</style>
+
+
+<h1>Enrollment Details</h1>
+<div class="details-row">
+    <div class="details-label">Enrollment Id:</div>
+    <p>@Model.EnrollmentId</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Student Id:</div>
+    <p>@Model.StudentId</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Student Name:</div>
+    <p>@Model.StudentName</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Contact:</div>
+    <p>@Model.Contact</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Date of Birth (DOB):</div>
+    <p>@Model.DOB.ToString("yyyy-MM-dd")</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Email:</div>
+    <p>@Model.Email</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Zip:</div>
+    <p>@Model.Zip</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Country:</div>
+    <p>@Model.Country</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Course Id:</div>
+    <p>@Model.CourseId</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Course Name:</div>
+    <p>@Model.CourseName</p>
+</div>
+<div class="details-row">
+    <div class="details-label">Enrollment Date:</div>
+    <p>@Model.EnrollmentDate.ToString("yyyy-MM-dd")</p>
+</div>

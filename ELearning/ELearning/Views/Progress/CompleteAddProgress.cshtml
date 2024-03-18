@@ -1,0 +1,180 @@
+﻿@using ELearning.Models;
+@model ELearning.Models.ProgressModel
+
+@{
+    ViewData["Title"] = "Progress Page";
+
+}
+<!-- Bootstrap modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="border: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="errorModalLabel">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<main class="mt-1 pt-3">
+    <div class="container">
+        <!-- Post Element -->
+        <div class="card mb-3 wow fadeIn">
+            <div class="card-header font-weight-bold">
+                Progress Form
+            </div>
+            <div class="card-body">
+                <!-- Default form post -->
+                <form id="progressForm" asp-action="AddProgress" asp-controller="Progress" method="post" onsubmit="return validateForm();">
+                   @*  <label for="replyFormStudentId">
+                        Student
+                    </label> *@
+                    <select name="StudentId" class="form-control" hidden>
+                        @foreach (var student in ViewBag.sqlData.ProgressList)
+                        {
+                            <option value="@student.StudentId">@student.StudentName</option>
+                        }
+                    </select>
+                    <label for="replyFormLessonId">
+                        Lesson
+                    </label>
+                        <select name="LessonId" class="form-control">
+                         @foreach (var lesson in ViewBag.sqlData.ProgressList)
+                        {
+                            <option value="@lesson.LessonId">@lesson.LessonTitle</option>
+                        }
+                    </select>
+                    <label for="replyFormCourseId">
+                        Course
+                    </label>
+                    <select name="CourseId" class="form-control">
+                                    @foreach (var course in ViewBag.sqlData.ProgressList)
+                        {
+                            <option value="@course.CourseId">@course.CourseName</option>
+                        }
+                    </select>
+
+                    <label for="replyFormCourseId">
+                        Lesson Status
+                    </label>
+                    <select name="LessonStatus" class="form-control">
+                        <option value="" >Select Status</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+
+                    <label for="replyFormLastAccessedDate">
+                        LastAccessedDate
+                    </label>
+                    <input type="date" name="LastAccessedDate" class="form-control">
+
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+                <!-- End of post form -->
+            <!-- Show submission status -->
+            <p id="alert" style="display: none; color: red;"></p>
+            </div>
+        </div>
+        <!-- End of entire Post element -->
+        <a href="@Url.Action("AddProgress", "Progress")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
+
+    </div>
+    <!-- End of Container -->
+</main>
+
+<script>
+    function validateForm() {
+        var studentId = document.getElementsByName("StudentId")[0].value;
+        var lessonId = document.getElementsByName("LessonId")[0].value;
+        var courseId = document.getElementsByName("CourseId")[0].value;
+        var lessonStatus = document.getElementsByName("LessonStatus")[0].value;
+        var lastAccessedDate = document.getElementsByName("LastAccessedDate")[0].value;
+        var isValid = true;
+
+        if (studentId.trim() === "") {
+            isValid = false;
+            document.getElementsByName("StudentId")[0].style.border = "1px solid red";
+        } else {
+            document.getElementsByName("StudentId")[0].style.border = "";
+        }
+
+        if (lessonId.trim() === "") {
+            isValid = false;
+            document.getElementsByName("LessonId")[0].style.border = "1px solid red";
+        } else {
+            document.getElementsByName("LessonId")[0].style.border = "";
+        }
+
+        if (courseId.trim() === "") {
+            isValid = false;
+            document.getElementsByName("CourseId")[0].style.border = "1px solid red";
+        } else {
+            document.getElementsByName("CourseId")[0].style.border = "";
+        }
+
+        if (lessonStatus.trim() === "") {
+            isValid = false;
+            document.getElementsByName("LessonStatus")[0].style.border = "1px solid red";
+        } else {
+            document.getElementsByName("LessonStatus")[0].style.border = "";
+        }
+
+        if (lastAccessedDate.trim() === "") {
+            isValid = false;
+            document.getElementsByName("LastAccessedDate")[0].style.border = "1px solid red";
+        } else {
+            document.getElementsByName("LastAccessedDate")[0].style.border = "";
+        }
+
+        if (!isValid) {
+            // Show error modal
+            var errorMessage = document.getElementById("errorMessage");
+            errorMessage.innerText = "Please fill in all fields.";
+            $('#errorModal').modal('show');
+        }
+
+        return isValid;
+    }
+
+    // Close the modal manually using vanilla JavaScript
+    function closeModal() {
+        var modal = document.getElementById("errorModal");
+        var backdrop = document.querySelector(".modal-backdrop");
+        modal.classList.remove("show");
+        modal.style.display = "none";
+        backdrop.remove();
+        document.body.classList.remove("modal-open");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputs = document.querySelectorAll('input[type="text"], input[type="email"], select');
+
+        inputs.forEach(function (input) {
+            input.addEventListener("input", function () {
+                if (this.value.trim() !== "") {
+                    this.style.border = "";
+                }
+            });
+        });
+
+        var lastAccessedDateInput = document.getElementsByName("LastAccessedDate")[0];
+
+        lastAccessedDateInput.addEventListener("change", function () {
+            if (this.value.trim() !== "") {
+                this.style.border = "";
+            }
+        });
+    });
+</script>
+

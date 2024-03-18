@@ -1,4 +1,5 @@
 ﻿@using ELearning.Models;
+
 @{
     ViewData["text"] = ViewBag.Message;
 }
@@ -42,6 +43,7 @@
                         Instructor
                     </label>
                     <select name="InstructorId" class="form-control">
+                        <option value="" style="text-color:grey">Select Instructor</option>
                         @foreach (var instructor in ViewBag.SqlData.InstructorList)
                         {
                             <option value="@instructor.InstructorId">@instructor.InstructorName</option>
@@ -59,36 +61,32 @@
             </div>
         </div>
         <!-- End of entire Post element -->
-        <!--Card-->
-        <div class="card-body text-center">
+        <a href="@Url.Action("CoursePage", "Home")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
 
-            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
-               role="button">
-                Back to Home
-                <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <!-- End of Card -->
     </div>
     <!-- End of Container -->
 </main>
 
 
-
 <script>
     function validateForm() {
-        var form = document.getElementById("studentForm");
-        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+        var courseName = document.getElementsByName("CourseName")[0];
+        var instructorId = document.getElementsByName("InstructorId")[0];
         var isValid = true;
 
-        inputs.forEach(function (input) {
-            if (input.value.trim() === "") {
-                isValid = false;
-                input.style.border = "1px solid red";
-            } else {
-                input.style.border = "";
-            }
-        });
+        if (courseName.value.trim() === "") {
+            isValid = false;
+            courseName.style.border = "1px solid red";
+        } else {
+            courseName.style.border = "";
+        }
+
+        if (instructorId.value.trim() === "") {
+            isValid = false;
+            instructorId.style.border = "1px solid red";
+        } else {
+            instructorId.style.border = "";
+        }
 
         if (!isValid) {
             // Show error modal
@@ -111,7 +109,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+        var inputs = document.querySelectorAll('input[type="text"], input[type="email"], select');
 
         inputs.forEach(function (input) {
             input.addEventListener("input", function () {

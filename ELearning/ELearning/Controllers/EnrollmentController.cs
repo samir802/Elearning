@@ -61,20 +61,18 @@ namespace ELearning.Controllers
             return View();
         }
 
-        public IActionResult SearchDetails()
-		{
-
-			EnrollmentModel EnrollmentModel = new EnrollmentModel();
-			EnrollmentModel.GetEnrollment();
-			ViewBag.SqlData = EnrollmentModel;
-
-			return View();
-		}
+        public IActionResult PopularCourse(int month)
+        {
+            EnrollmentModel enrollModel = new EnrollmentModel();
+            List<EnrollmentModel> topThreeCourses = enrollModel.PopularCourse(month);
+            ViewBag.SelectedMonth = month;
+            return View(topThreeCourses);
+        }
 
 
 
 
-		[HttpPost]
+        [HttpPost]
 		public IActionResult AddEnrollment(EnrollmentModel model)
 		{
 			/* Make sure that inputted value isn't null or empty */
@@ -111,6 +109,15 @@ namespace ELearning.Controllers
 			return View("SearchDetails", enroll);
 		}
 
+
+		public IActionResult GetSpecificEnrollmentDetails(int id)
+		{
+            EnrollmentModel enroll = new EnrollmentModel();
+            enroll = enroll.GetEnrollmentDetails(id);
+            return View("SpecificEnrollmentDetails", enroll);
+
+        }
+
         [HttpPost]
         public ActionResult Update(EnrollmentModel updatedEnrollment)
         {
@@ -146,29 +153,6 @@ namespace ELearning.Controllers
 
 			return RedirectToAction("ListEnrollment"); 
 		}
-
-		//[HttpGet]
-  //      public IActionResult SearchDetails(string searchName)
-  //      {
-  //          EnrollmentModel sqldata = new EnrollmentModel();
-
-  //          if (!string.IsNullOrEmpty(searchName))
-  //          {
-  //              // Filter the enrollment list based on the entered student name
-  //              sqldata.GetEnrollmentsByStudentName(searchName);
-  //          }
-           
-  //          else
-  //          {
-  //              sqldata.GetEnrollment();
-  //          }
-			
-
-  //          ViewBag.sqldata = sqldata;
-  //          return View();
-  //      }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

@@ -8,7 +8,7 @@
 <!-- Bootstrap modal -->
 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="border: none;">
-        <div class="modal-content" style="background-color:orangered;color:white">
+        <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="errorModalLabel">Error</h4>
             </div>
@@ -45,40 +45,28 @@
                 </form>
                 <!-- End of post form -->
                 <!-- Show submission status -->
-                <p id="alert" style="display: none; color: red;"></p>
+                <p id="alert" style="display: none;"></p>
             </div>
         </div>
         <!-- End of entire Post element -->
-        <!--Card-->
-        <div class="card-body text-center">
+        <a href="@Url.Action("InstructorPage", "Home")" class="btn btn-primary"> <i class="fas fa-arrow-left ml-1"></i> Back</a>
 
-            <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action=""
-               role="button">
-                Back to Home
-                <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
-        <!-- End of Card -->
     </div>
     <!-- End of Container -->
 </main>
 
 
-
 <script>
     function validateForm() {
-        var form = document.getElementById("studentForm");
-        var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+        var instructorName = document.getElementsByName("InstructorName")[0];
         var isValid = true;
 
-        inputs.forEach(function (input) {
-            if (input.value.trim() === "") {
-                isValid = false;
-                input.style.border = "1px solid red";
-            } else {
-                input.style.border = "";
-            }
-        });
+        if (instructorName.value.trim() === "") {
+            isValid = false;
+            instructorName.style.border = "1px solid red";
+        } else {
+            instructorName.style.border = "";
+        }
 
         if (!isValid) {
             // Show error modal
@@ -112,3 +100,4 @@
         });
     });
 </script>
+
