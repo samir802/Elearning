@@ -10,9 +10,11 @@ namespace ELearning.Models
     {
         string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
         public int CourseId {  get; set; }
-        public string CourseName { get; set; }
+        public string? CourseName { get; set; }
         public int InstructorId { get; set; }
-        public string InstructorName { get; set; }
+        public string? InstructorName { get; set; }
+
+        public int EnrollmentCount { get; set; }
 		public List<CourseModel> courseList = new List<CourseModel>();
 
 		public void AddCourse(CourseModel model)
@@ -118,6 +120,50 @@ namespace ELearning.Models
             }
 
             return course;
+        }
+
+        public List<CourseModel> GetTop3CoursesByEnrollment(DateTime selectedDate)
+        {
+            List<CourseModel> topCourses = new List<CourseModel>();
+            try
+            {
+                using (OracleConnection con = new OracleConnection(conString))
+                {
+                    string queryString = @"
+                SELECT c.COURSEID, c.COURSENAME, COUNT(e.ENROLLMENTID) AS ENROLLMENT_COUNT
+                FROM COURSE c
+                JOIN ENROLLMENT e ON c.COURSEID = e.COURSEID
+                WHERE EXTRACT(YEAR FROM e.ENROLLMENTDATE) = :Year
+                AND EXTRACT(MONTH FROM e.ENROLLMENTDATE) = :Month
+                GROUP BY c.COURSEID, c.COURSENAME
+                ORDER BY ENROLLMENT_COUNT DESC
+                FETCH FIRST 3 ROWS ONLY";
+                    OracleCommand cmd = new OracleCommand(queryString, con);
+                    cmd.Parameters.Add("Year", OracleDbType.Int32).Value = selectedDate.Year;
+                    cmd.Parameters.Add("Month", OracleDbType.Int32).Value = selectedDate.Month;
+                    cmd.BindByName = true;
+                    cmd.CommandType = CommandType.Text;
+
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        topCourses.Add(new CourseModel
+                        {
+                            CourseId = reader.GetInt32(0),
+                            CourseName = reader.GetString(1),
+                            EnrollmentCount = reader.GetInt32(2)
+                        });
+                    }
+                    reader.Dispose();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return topCourses;
         }
 
 

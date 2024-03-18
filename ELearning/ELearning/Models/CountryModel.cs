@@ -12,7 +12,7 @@ namespace ELearning.Models
   
 
         public int Zip { get; set; }
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         public List<CountryModel> country = new List<CountryModel>();
 

@@ -1,105 +1,88 @@
-﻿@{
+﻿@model List<ELearning.Models.CourseModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-   
+<div class="container mt-5 border border-secondary p-4">
+    <h2>Top 3 Courses by Enrollment</h2>
+
+    <!-- Date Picker Form -->
+    <form asp-action="Index" method="get" class="mb-3">
+        <div class="form-group me-2">
+            <label for="date">Select Month and Year:</label>
+            <div class="d-flex">
+                <input type="month" id="date" name="date" class="form-control" style="width: 200px;">
+                <button type="submit" class="btn btn-primary btn-sm" style="margin-left:10px;">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="d-flex">
+        <div class="col mt-3">
+            @foreach (var course in Model)
+            {
+                <div class="col-md-4">
+                    <a href="@Url.Action("Details", "Course", new { id = course.CourseId })" class="text-decoration-none">
+                        <div class="card mb-4 shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">@course.CourseName</h5>
+                                <p class="card-text">Enrollment Count: @course.EnrollmentCount</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="mt-4 pe-4">
+            <canvas id="enrollmentPieChart" style="margin-right: 100px;"></canvas>
+        </div>
+    </div>
 </div>
 
-@* <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <a href="@Url.Action("StudentPage", "Home")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" >
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-user fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Student</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Assuming you have the enrollment counts for the top 3 courses
+        var enrollmentCounts = @Html.Raw(Json.Serialize(Model.Select(c => c.EnrollmentCount)));
+        var courseTitles = @Html.Raw(Json.Serialize(Model.Select(c => c.CourseName)));
 
-        <div class="col-md-4">
-            <a href="@Url.Action("CoursePage", "Home")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" >
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-book fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Course</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+        var ctx = document.getElementById('enrollmentPieChart').getContext('2d');
+        var enrollmentPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: courseTitles,
+                datasets: [{
+                    label: 'Enrollment Count',
+                    data: enrollmentCounts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Top 3 Courses by Enrollment'
+                    }
+                }
+            }
+        });
+    </script>
+}
 
-        <div class="col-md-4">
-            <a href="@Url.Action("InstructorPage", "Home")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-chalkboard-user fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Instructor</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="@Url.Action("LessonPage", "Home")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-file fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Lesson</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="@Url.Action("EnrollmentPage", "Home")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-file fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Enrollment</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-    </div>
-    <div class="col-md-4">
-            <a href="@Url.Action("AddProgress", "Progress")" class="card-link" style="text-decoration:none">
-                <div class="card mb-3 text-dark shadow-lg p-3 mb-5 bg-white rounded" ">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <div class="mr-3" style="margin-right: 8px;">
-                            <i class="fas fa-file fa-2x"></i>
-                        </div>
-                        <div style="margin-left: 8px;">
-                            <!-- Added margin-left -->
-                            <h3 class="card-text mb-0">Progress</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-    </div>
-
-</div> *@

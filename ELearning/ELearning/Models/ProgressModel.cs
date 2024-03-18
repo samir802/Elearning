@@ -14,12 +14,12 @@ namespace ELearning.Models
         public int StudentId { get; set; }
         public int LessonId { get; set; }
         public int CourseId { get; set; }
-        public string LessonStatus { get; set; }
+        public string? LessonStatus { get; set; }
         public DateTime LastAccessedDate { get; set; }
 
-        public string StudentName { get; set; }
-        public string LessonTitle { get; set; }
-        public string CourseName { get; set; }
+        public string? StudentName { get; set; }
+        public string? LessonTitle { get; set; }
+        public string? CourseName { get; set; }
 
         public int EnrollmentId { get; set; }
 

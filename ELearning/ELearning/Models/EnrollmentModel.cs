@@ -12,24 +12,24 @@ namespace ELearning.Models
 		public DateTime EnrollmentDate { get; set; }
 
 		public int StudentId { get; set; }
-		public string StudentName { get; set; }
-        public string Contact { get; set; }
+		public string? StudentName { get; set; }
+        public string? Contact { get; set; }
         public DateTime DOB { get; set; }
         public string Email { get; set; }
 
-        public string Country { get; set; }
+        public string? Country { get; set; }
         public int Zip {  get; set; }
 
 
         public int CourseId { get; set; }
-		public string CourseName { get; set; }
+		public string? CourseName { get; set; }
 
-        public string LessonTitle { get; set; }
-
-
+        public string? LessonTitle { get; set; }
 
 
-        public string InstructorName { get; set; }
+
+
+        public string? InstructorName { get; set; }
         public int EnrollmentCount { get; set; }
 
         public List<EnrollmentModel> listEnrollment =	new List<EnrollmentModel>();

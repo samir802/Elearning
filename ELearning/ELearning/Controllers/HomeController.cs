@@ -1,6 +1,7 @@
 using ELearning.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace ELearning.Controllers
 {
@@ -13,9 +14,22 @@ namespace ELearning.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? date)
         {
-            return View();
+            DateTime selectedDate;
+            if (string.IsNullOrEmpty(date))
+            {
+                selectedDate = DateTime.Now;
+            }
+            else
+            {
+                selectedDate = DateTime.ParseExact(date, "yyyy-MM", CultureInfo.InvariantCulture);
+            }
+
+            var courses = new CourseModel();
+            var topCourses = courses.GetTop3CoursesByEnrollment(selectedDate);
+            ViewBag.SelectedDate = selectedDate; // Pass the selected date to the view
+            return View(topCourses);
         }
 
         public IActionResult Privacy()

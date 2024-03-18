@@ -9,13 +9,13 @@ namespace ELearning.Models
 
 
         public int LessonId { get; set; }
-        public string LessonTitle { get; set; }
+        public string? LessonTitle { get; set; }
         public int CourseId { get; set; }
 
-        public string CourseName { get; set; }
+        public string? CourseName { get; set; }
 
         public List<LessonModel> lessons = new List<LessonModel>();
-
+         
         public void Getlessons()
         {
             try

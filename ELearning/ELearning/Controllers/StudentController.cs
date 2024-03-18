@@ -98,20 +98,37 @@ namespace ELearning.Controllers
 
         public ActionResult DeleteConfirmed(int id)
         {
-            using (OracleConnection connection = new OracleConnection(conString))
+            try
             {
-                connection.Open();
-
-                string query = "DELETE FROM Student WHERE StudentId = :StudentId";
-                using (OracleCommand command = new OracleCommand(query, connection))
+                using (OracleConnection connection = new OracleConnection(conString))
                 {
-                    command.Parameters.Add(new OracleParameter("StudentId", id));
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "DELETE FROM Student WHERE StudentId = :StudentId";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("StudentId", id));
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return RedirectToAction("ListStudent");
+            }catch (Exception ex)
+            {
+                if (ex.Message.Contains("ORA-02292")) // Check if the error message contains ORA-02292
+                {
+                    // Handle the constraint violation by returning a view with JavaScript for pop-up dialog
+                    string errorMessage = "This item cannot be deleted because it has associated child records.";
+                    ViewBag.ErrorMessage = errorMessage;
+                    return View("ErrorPopup");
+                }
+                else
+                {
+                    return RedirectToAction("ListStudent");
                 }
             }
-
-            return RedirectToAction("ListStudent"); // Assuming "Index" is the action method that displays the course list
         }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

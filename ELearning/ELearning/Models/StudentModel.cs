@@ -12,15 +12,15 @@ namespace ELearning.Models
         public int StudentId {  get; set; }
 
 
-        public string StudentName { get; set; }
+        public string? StudentName { get; set; }
 
-        public string Contact {  get; set; }
+        public string? Contact {  get; set; }
         public DateTime DOB { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         public int Zip { get; set; }
-        public string Country { get; set; } 
+        public string?   Country { get; set; } 
 
         public List<StudentModel> StudentList = new List<StudentModel>();
 
@@ -102,7 +102,7 @@ namespace ELearning.Models
                 {
                     connection.Open();
 
-                    string query = "SELECT s.StudentId, s.StudentName, s.Contact, s.DOB, s.Email, s.Zip,c.CountryName FROM Student s JOIN country c ON s.zip = c.zip WHERE s.StudentId = :StudentId";
+                    string query = "SELECT s.StudentId, s.StudentName, s.Contact, s.DOB, s.Email, s.Zip,c.Country_Name FROM Student s JOIN country c ON s.zip = c.zip WHERE s.StudentId = :StudentId";
                     using (OracleCommand command = new OracleCommand(query, connection))
                     {
                         command.Parameters.Add(new OracleParameter("StudentId", id));
@@ -117,7 +117,7 @@ namespace ELearning.Models
                                 student.DOB = reader.GetDateTime(reader.GetOrdinal("DOB"));
                                 student.Email = Convert.ToString(reader["Email"]);
                                 student.Zip = Convert.ToInt32(reader["Zip"]);
-                                student.Country = Convert.ToString(reader["CountryName"]);
+                                student.Country = Convert.ToString(reader["Country_Name"]);
                             }
                         }
                     }

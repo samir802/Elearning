@@ -8,10 +8,10 @@ namespace ELearning.Models
     {
         string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
         public int InstructorId { get; set; }
-        public string InstructorName { get; set; }
+        public string? InstructorName { get; set; }
 
-        public string CourseId { get; set; }
-        public string CourseTitle { get; set; }
+        public string? CourseId { get; set; }
+        public string? CourseTitle { get; set; }
 
         public List<InstructorModel> InstructorList = new List<InstructorModel>();
 
