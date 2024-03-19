@@ -127,7 +127,7 @@ namespace ELearning.Models
             List<CourseModel> topCourses = new List<CourseModel>();
             try
             {
-                using (OracleConnection con = new OracleConnection(conString))
+                using (OracleConnection con = new OracleConnection(conString))     
                 {
                     string queryString = @"
                 SELECT c.COURSEID, c.COURSENAME, COUNT(e.ENROLLMENTID) AS ENROLLMENT_COUNT

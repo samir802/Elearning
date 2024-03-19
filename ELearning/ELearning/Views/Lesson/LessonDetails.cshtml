@@ -4,15 +4,11 @@
 }
 
 <div class="container">
-    <h1 class="mt-5 mb-4">Student Details</h1>
+    <h1 class="mt-5 mb-4">Lesson Details</h1>
     <form method="post" asp-action="Update" asp-controller="Lesson">
         <div class="mb-3">
             <label for="lessonId" class="form-label">Lesson ID:</label>
             <input type="text" class="form-control" id="lessonId" name="LessonId" value="@Model.LessonId" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="lessonTitle" class="form-label">Lesson:</label>
-            <input type="text" class="form-control" id="lessonTitle" name="LessonTitle" value="@Model.LessonTitle">
         </div>
         <div class="mb-3">
             <label for="courseDropdown" class="form-label">Course:</label>
@@ -23,6 +19,11 @@
                 }
             </select>
         </div>
+        <div class="mb-3">
+            <label for="lessonTitle" class="form-label">Lesson:</label>
+            <input type="text" class="form-control" id="lessonTitle" name="LessonTitle" value="@Model.LessonTitle">
+        </div>
+        
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>

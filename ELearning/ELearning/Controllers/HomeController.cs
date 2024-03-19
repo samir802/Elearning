@@ -28,7 +28,7 @@ namespace ELearning.Controllers
 
             var courses = new CourseModel();
             var topCourses = courses.GetTop3CoursesByEnrollment(selectedDate);
-            ViewBag.SelectedDate = selectedDate; // Pass the selected date to the view
+            ViewBag.SelectedDate = selectedDate;
             return View(topCourses);
         }
 

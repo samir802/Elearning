@@ -5,7 +5,7 @@
 }
 
 @{
-    ViewData["Title"] = "Course Details";
+    ViewData["Title"] = "Instructor and Course Details";
 }
 
 <div class="text-center">
@@ -13,18 +13,23 @@
     <p>The table below shows content in the 'Course and Instructor' table.</p>
 </div>
 
-<!-- Search bar -->
-<div class="container mt-3">
-    <form method="get" action="@Url.Action("SearchByInstructor", "Instructor")">
-        <div class="form-group">
-            <input type="text" name="searchName" class="form-control" placeholder="Search by Instructor Name">
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</div>
-
 <!-- Main layout -->
 <main class="mt-1 pt-3">
+    <div class="container mt-3 mb-2">
+        <form method="get" action="@Url.Action("SearchByInstructor", "Instructor")">
+            <div class="d-flex">
+                <select id="searchNameSelect" name="searchName" class="form-control me-5">
+                    <option value="" style="text-color:grey">Select Instructor</option>
+                    @foreach (var instructor in Viewsqldata.InstructorList)
+                    {
+                        <option value="@instructor.InstructorName">@instructor.InstructorName</option>
+                    }
+                </select>
+
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
     <div class="container">
 
         @if (Viewsqldata != null && Viewsqldata.SearchByInstructor.Count > 0)

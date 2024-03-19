@@ -129,6 +129,7 @@ namespace ELearning.Controllers
             else
             {
                 sqldata.GetInstructors();
+
             }
 
             ViewBag.sqldata = sqldata;

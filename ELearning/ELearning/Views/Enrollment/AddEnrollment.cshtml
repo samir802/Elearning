@@ -48,9 +48,19 @@
                     </label>
                     <select id="courseSelect" name="CourseId" class="form-control">
                         <option value="" style="text-color:grey">Select Course</option>
-                        @foreach (var course in ViewBag.course.courseList)
-                        {
-                            <option value="@course.CourseId">@course.CourseName</option>
+                        @{
+                            var courses = ViewBag.course.courseList as List<CourseModel>;
+                            if (courses != null)
+                            {
+                                var uniqueCourse = courses
+                                .GroupBy(e => e.CourseName)
+                                .Select(g => g.First())
+                                .ToList();
+                                foreach (var course in uniqueCourse)
+                                {
+                                    <option value="@course.CourseId">@course.CourseName</option>
+                                }
+                            }
                         }
                     </select>
 

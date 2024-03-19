@@ -33,11 +33,6 @@
             <div class="card-body">
                 <!-- Default form post -->
                 <form id="lessonForm" asp-action="AddLesson" asp-controller="Lesson" method="post" onsubmit="return validateForm();">
-                    <label for="replyFormCourseName">
-                        Lesson Title
-                    </label>
-                    <input type="text" name="LessonTitle" class="form-control">
-                    <br>
                     <label for="replyFormCourseId">
                         Course
                     </label>
@@ -48,6 +43,13 @@
                             <option value="@course.CourseId">@course.CourseName</option>
                         }
                     </select>
+                    
+                    <br>
+                    <label for="replyFormCourseName">
+                        Lesson Title
+                    </label>
+                    <input type="text" name="LessonTitle" class="form-control">
+                    
 
                     <!-- Submit Button -->
                     <div class="text-center mt-4">

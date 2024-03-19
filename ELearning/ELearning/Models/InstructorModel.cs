@@ -10,7 +10,7 @@ namespace ELearning.Models
         public int InstructorId { get; set; }
         public string? InstructorName { get; set; }
 
-        public string? CourseId { get; set; }
+        public int CourseId { get; set; }
         public string? CourseTitle { get; set; }
 
         public List<InstructorModel> InstructorList = new List<InstructorModel>();
@@ -115,7 +115,18 @@ namespace ELearning.Models
             {
                 using (OracleConnection con = new OracleConnection(conString))
                 {
-                    string queryString = "SELECT c.CourseId, c.CourseName,\r\n       CASE \r\n           WHEN course_count >= 2 THEN \r\n               i.InstructorId\r\n           ELSE 0\r\n       END AS InstructorId,\r\n       CASE \r\n           WHEN course_count >= 2 THEN \r\n               i.InstructorName\r\n           ELSE 'Empty'\r\n       END AS InstructorName\r\nFROM course c\r\nJOIN instructor i ON c.InstructorId = i.InstructorId\r\nLEFT JOIN (\r\n    SELECT InstructorId, COUNT(*) AS course_count\r\n    FROM course\r\n    GROUP BY InstructorId\r\n) c_count ON c.InstructorId = c_count.InstructorId\r\nWHERE i.InstructorName = :instructorName\r\nGROUP BY c.CourseId, c.CourseName, c_count.course_count, i.InstructorId, i.InstructorName";
+                    string queryString = "SELECT c.CourseId, c.CourseName," +
+                     "       i.InstructorId," +
+                     "       i.InstructorName " + 
+                     "FROM course c " +          
+                     "JOIN instructor i ON c.InstructorId = i.InstructorId " + 
+                     "WHERE i.InstructorName = :instructorName " +
+                     "AND i.InstructorId IN (" +
+                     "    SELECT InstructorId " +
+                     "    FROM course " +
+                     "    GROUP BY InstructorId " +
+                     "    HAVING COUNT(*) >= 2)";
+
 
                     OracleCommand cmd = new OracleCommand(queryString, con);
                     cmd.Parameters.Add(":instructorName", OracleDbType.Varchar2).Value = instructorName;
@@ -129,15 +140,8 @@ namespace ELearning.Models
                     while (reader.Read())
                     {
                         InstructorModel instructor = new InstructorModel();
-
-
-                        // Handle potential NULL values for COURSEID and COURSETITLE
-                        if (!reader.IsDBNull(0))
-                            instructor.CourseId = reader.GetString(0);
-
-                        if (!reader.IsDBNull(1))
-                            instructor.CourseTitle = reader.GetString(1);
-
+                        instructor.CourseId = reader.GetInt32(0);
+                        instructor.CourseTitle = reader.GetString(1);
                         instructor.InstructorId = reader.GetInt32(2);
                         instructor.InstructorName = reader.GetString(3);
                         SearchByInstructor.Add(instructor);

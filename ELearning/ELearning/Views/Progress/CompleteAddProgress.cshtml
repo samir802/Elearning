@@ -51,11 +51,12 @@
                             <option value="@lesson.LessonId">@lesson.LessonTitle</option>
                         }
                     </select>
+
                     <label for="replyFormCourseId">
                         Course
                     </label>
                     <select name="CourseId" class="form-control">
-                                    @foreach (var course in ViewBag.sqlData.ProgressList)
+                        @foreach (var course in ViewBag.sqlData.ProgressList)
                         {
                             <option value="@course.CourseId">@course.CourseName</option>
                         }

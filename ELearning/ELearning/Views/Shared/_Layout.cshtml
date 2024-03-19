@@ -4,49 +4,58 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ELearning</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/ELearning.styles.css" asp-append-version="true"/>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ELearning.styles.css" asp-append-version="true" />
+    <style>
+        .navbar-nav .nav-link.active,
+        .navbar-nav .nav-link:focus{
+            color: green !important;
+        }
+        .navbar-nav .nav-link:hover {
+            color: coral !important;
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" >ELearning</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ELearning</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ms-5">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "Index") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="StudentPage">Student</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CoursePage">Course</a>
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "StudentPage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="StudentPage">Student</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="InstructorPage">Instructor</a>
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "CoursePage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="CoursePage">Course</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LessonPage">Lesson</a>
-                        </li>  
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="EnrollmentPage">Enrollment</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ProgressPage">Progress</a>
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "InstructorPage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="InstructorPage">Instructor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "LessonPage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="LessonPage">Lesson</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "EnrollmentPage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="EnrollmentPage">Enrollment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "ProgressPage") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="ProgressPage">Progress</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light @((ViewContext.RouteData.Values["Action"].ToString() == "Privacy") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
                     </ul>

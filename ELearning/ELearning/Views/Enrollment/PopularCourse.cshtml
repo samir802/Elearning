@@ -11,9 +11,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form asp-action="PopularCourse" method="get" class="mb-5">
-                <div class="form-group row">
-                    <label for="month" class="col-md-3 col-form-label">Select Month:</label>
-                    <div class="col-md-5">
+                <div class="form-group d-flex">
+                    <label for="month" class="col-form-label">Select Month</label>
+                    <div class="col-md-3 ms-1">
                         <select name="month" id="month" class="form-control">
                             @for (int i = 1; i <= 12; i++)
                             {
@@ -29,7 +29,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 ms-1">
                         <button type="submit" class="btn btn-primary">Show Top Courses</button>
                     </div>
                 </div>
