@@ -7,7 +7,7 @@ namespace ELearning.Controllers
 {
     public class DashboardController : Controller
     {
-        private readonly string _connectionString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
+        string conString = DbConnection.conString;
 
         public IActionResult Index()
         {
@@ -17,7 +17,7 @@ namespace ELearning.Controllers
             //ViewBag.dashboardData = dashboardData;
             //return View();
            DashboardModel dashboardData = new DashboardModel();
-            dashboardData.PopulateDashboardData(_connectionString);
+            dashboardData.PopulateDashboardData(conString);
 
             return View(dashboardData);
         }

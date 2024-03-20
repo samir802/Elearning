@@ -11,7 +11,9 @@ namespace ELearning.Controllers
 {
     public class ProgressController : Controller
     {
-        string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
+        string conString = DbConnection.conString;
+
+        
         private readonly ILogger<ProgressController> _logger;
 
         public ProgressController(ILogger<ProgressController> logger)

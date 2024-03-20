@@ -7,9 +7,7 @@ namespace ELearning.Models
 {
     public class CountryModel
     {
-
-        string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
-  
+        string conString = DbConnection.conString;
 
         public int Zip { get; set; }
         public string? Country { get; set; }

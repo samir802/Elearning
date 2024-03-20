@@ -7,8 +7,9 @@ namespace ELearning.Controllers
 {
 	public class EnrollmentController : Controller
 	{
-		string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
-		private readonly ILogger<EnrollmentController> _logger;
+        string conString = DbConnection.conString;
+
+        private readonly ILogger<EnrollmentController> _logger;
 
 		public EnrollmentController(ILogger<EnrollmentController> logger)
 		{

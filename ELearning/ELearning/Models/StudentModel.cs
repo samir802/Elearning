@@ -7,8 +7,8 @@ namespace ELearning.Models
     public class StudentModel
     {
 
+        string conString = DbConnection.conString;
 
-        string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
         public int StudentId {  get; set; }
 
 

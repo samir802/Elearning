@@ -6,26 +6,34 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">lesson List</h1>
+    <h1 class="display-4">Lesson List</h1>
 </div>
 
-<table class="table">
-    <thead>
+<!-- Search bar and button -->
+<div class="container mb-3" style="max-width: 500px;">
+    <div class="input-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+        <button id="searchBtn" class="btn btn-success">Search</button>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
         <tr>
-			<th scope="col">Lesson ID</th>
-			<th scope="col">Course</th>
-            <th scope="col">Lesson Title</th>            
+            <th scope="col">Lesson ID</th>
+            <th scope="col">Course</th>
+            <th scope="col">Lesson Title</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="lessonTableBody">
         @foreach (var lesson in sqldata.lessons)
         {
             <tr>
-				<td>@lesson.LessonId</td>
-				<td>@lesson.CourseName</td>
+                <td>@lesson.LessonId</td>
+                <td>@lesson.CourseName</td>
                 <td>@lesson.LessonTitle</td>
-                
+
                 <td>
                     <a href="@Url.Action("GetLessonById", "Lesson", new { id = lesson.LessonId })" class="btn btn-primary">Edit</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del-@lesson.LessonId">
@@ -43,11 +51,10 @@
                         </div>
                         <div class="modal-body">
                             <dl class="dl-horizontal">
-                                <dt>lesson ID:</dt>
+                                <dt>Lesson ID:</dt>
                                 <dd>@lesson.LessonId</dd>
-                                <dt>lesson Name:</dt>
+                                <dt>Lesson Title:</dt>
                                 <dd>@lesson.LessonTitle</dd>
-                                
                             </dl>
                         </div>
                         <div class="modal-footer">
@@ -58,6 +65,42 @@
                 </div>
             </div>
         }
+        <!-- No results found message -->
+        <tr id="noResults" style="display: none;">
+            <td colspan="4" class="text-center" style="color:red">No results found!</td>
+        </tr>
     </tbody>
 </table>
-<a href="@Url.Action("lessonPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>
+<a href="@Url.Action("LessonPage", "Home")" class="btn btn-primary"><i class="fas fa-arrow-left ml-1"></i> Back</a>
+
+<script>
+    // Search functionality
+    document.getElementById("searchInput").addEventListener("input", function () {
+        var input, filter, table, tr, td, i, txtValue;
+        input = this.value.toUpperCase();
+        table = document.getElementById("lessonTableBody");
+        tr = table.getElementsByTagName("tr");
+        var found = false; // Flag to check if any result is found
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2]; // Adjust index to the column you want to search in
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(input) > -1) {
+                    tr[i].style.display = "";
+                    found = true;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // Display "No results found" message if no matching data is found
+        var noResultsRow = document.getElementById("noResults");
+        if (!found) {
+            noResultsRow.style.display = "";
+        } else {
+            noResultsRow.style.display = "none";
+        }
+    });
+</script>

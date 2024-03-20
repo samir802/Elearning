@@ -8,8 +8,8 @@ namespace ELearning.Models
     public class ProgressModel
     {
 
-        string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
-  
+        string conString = DbConnection.conString;
+
 
         public int StudentId { get; set; }
         public int LessonId { get; set; }

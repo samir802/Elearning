@@ -11,7 +11,9 @@ namespace ELearning.Controllers
 {
     public class StudentController : Controller
     {
-        string conString = "User Id=elearningdatabase;Password=elearningdatabase;Data Source=localhost:1521/orcl;";
+        string conString = DbConnection.conString;
+
+        
         private readonly ILogger<StudentController> _logger;
 
         public StudentController(ILogger<StudentController> logger)
@@ -55,7 +57,7 @@ namespace ELearning.Controllers
                 StudentModel getFormData = new StudentModel();
                 getFormData.AddStudent(model);
 
-                
+
                 ViewBag.Message = "Success: Value will be inserted into database";
                 return Redirect("ListStudent");
             }
@@ -77,7 +79,7 @@ namespace ELearning.Controllers
         [HttpPost]
         public ActionResult Update(StudentModel updatedStudent)
         {
-            using(OracleConnection conn = new OracleConnection(conString))
+            using (OracleConnection conn = new OracleConnection(conString))
             {
                 conn.Open();
                 string query = "UPDATE Student SET StudentName=:StudentName, Contact=:Contact,DOB=:DOB,Email=:Email,Zip=:Zip WHERE StudentId = :StudentId";
@@ -91,7 +93,7 @@ namespace ELearning.Controllers
 
                 cmd.ExecuteNonQuery();
             }
-           // Redirect back to the page or any other appropriate action
+            // Redirect back to the page or any other appropriate action
             return RedirectToAction("ListStudent", "Student"); // Redirect to Home/Index
         }
 
@@ -113,7 +115,8 @@ namespace ELearning.Controllers
                 }
 
                 return RedirectToAction("ListStudent");
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 if (ex.Message.Contains("ORA-02292")) // Check if the error message contains ORA-02292
                 {
